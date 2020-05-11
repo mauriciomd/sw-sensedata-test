@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
+  <title>Star Wars: Starships</title>
+</head>
+
+<body>
+  <nav>
+    <div>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('starships') }}">Starships</a>
+    </div>
+  </nav>
+
+  <div id="container">
+    <table>
+      <thead>
+        <tr>
+          <td>Name:</td>
+          <td>Model:</td>
+          <td>Hyperdrive Rating:</td>
+          <td>Cost in Credits</td>
+          <td>Score:</td>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for item in starship %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.model }}</td>
+          <td>{{ item.hyperdrive_rating }}</td>
+          <td>{{ item.cost_in_credits }}</td>
+          <td>{{ item.score }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+
+</html>

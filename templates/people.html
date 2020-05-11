@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/static/styles.css">
+  <title>Star Wars: People</title>
+</head>
+
+<body>
+  <nav>
+    <div>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('starships') }}">Starships</a>
+    </div>
+  </nav>
+
+  <div id="container">
+    <div>
+      <form action="/" method="GET">
+        <div class="form-select">
+          <label for="filter_type">Type:</label>
+          {{ form.filter_type }}
+        </div>
+
+        <div class="form-select">
+          <label for="filter_type">Value:</label>
+          {{ form.filter_values }}
+        </div>
+
+        <!--  -->
+        <!--  -->
+        <div class="form-button">
+          <button type="submit">Filter</button>
+        </div>
+      </form>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <td><a
+              href="{{ url_for('index', orderby='name', page=current_page, filter_type=filter_type, filter_values=filter_values) }}">Name:</a>
+          </td>
+          <td><a
+              href="{{ url_for('index', orderby='gender', page=current_page, filter_type=filter_type, filter_values=filter_values) }}">Gender:</a>
+          </td>
+          <td><a
+              href="{{ url_for('index', orderby='weight', page=current_page, filter_type=filter_type, filter_values=filter_values) }}">Mass:</a>
+          </td>
+          <td><a
+              href="{{ url_for('index', orderby='height', page=current_page, filter_type=filter_type, filter_values=filter_values) }}">Height:</a>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for item in people %}
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.gender }}</td>
+          <td>{{ item.weight }}</td>
+          <td>{{ item.height }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-navigation">
+    {% if previous_page %}
+    <a id="previous-page"
+      href="{{ url_for('index', orderby=ordered_by, page=previous_page, filter_type=filter_type, filter_values=filter_values) }}">Pagina
+      Anterior</a>
+    {% endif %}
+
+    {% if next_page %}
+    <a id="next-page"
+      href="{{ url_for('index', orderby=ordered_by, page=next_page, filter_type=filter_type, filter_values=filter_values) }}">Próxima
+      Pagina</a>
+    {% endif %}
+  </div>
+
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+  $("#filter_type").change(function () {
+    $.ajax({
+      url: '/selectform',
+      type: 'POST',
+      data: $('#filter_type').serialize(),
+      success: function (selectOptions) {
+        $("#filter_values").empty();
+        for (var i = 0; i < selectOptions.length; i++) {
+          $("#filter_values").append(
+            $("<option></option>")
+              .attr("value", selectOptions[i][0])
+              .text(selectOptions[i][1])
+          );
+        }
+      }
+    });
+  });
+
+</script>
+
+</html>
